@@ -1,0 +1,28 @@
+version: '3.7'
+x-build-image: &build-image
+  build:
+    context: .
+    cache_from:
+      - web-lambdas-terraform
+      - quay.io/nyulibraries/web-lambdas-terraform
+      - quay.io/nyulibraries/web-lambdas-terraform:${CIRCLE_BRANCH//\//_}
+
+services:
+  web_lambdas_terraform_1:
+    <<: *build-image
+    image: web_lambdas_terraform
+  web_lambdas_terraform_2:
+    <<: *build-image
+    image: "quay.io/nyulibraries/web-lambdas-terraform:latest"
+    depends_on:
+      - web_lambdas_terraform_1
+  web_lambdas_terraform_3:
+    <<: *build-image
+    image: "quay.io/nyulibraries/web-lambdas-terraform:${CIRCLE_BRANCH//\//_}"
+    depends_on:
+      - web_lambdas_terraform_2
+  web_lambdas_terraform_4:
+    <<: *build-image
+    image: "quay.io/nyulibraries/web-lambdas-terraform:${CIRCLE_BRANCH//\//_}-${CIRCLE_SHA1}"
+    depends_on:
+      - web_lambdas_terraform_3
