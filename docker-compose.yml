@@ -5,7 +5,9 @@ x-build-image: &build-image
     cache_from:
       - web-lambdas-terraform
       - quay.io/nyulibraries/web-lambdas-terraform
-      - quay.io/nyulibraries/web-lambdas-terraform:${CIRCLE_BRANCH//\//_}
+      - quay.io/nyulibraries/web-lambdas-terraform:${BRANCH_NO_SLASH}
+  environment:
+    - BRANCH_NO_SLASH
 
 services:
   web_lambdas_terraform_1:
@@ -18,11 +20,17 @@ services:
       - web_lambdas_terraform_1
   web_lambdas_terraform_3:
     <<: *build-image
-    image: "quay.io/nyulibraries/web-lambdas-terraform:${CIRCLE_BRANCH//\//_}"
+    image: "quay.io/nyulibraries/web-lambdas-terraform:${BRANCH_NO_SLASH}"
     depends_on:
       - web_lambdas_terraform_2
+    environment:
+      - BRANCH_NO_SLASH
+      - CIRCLE_SHA1
   web_lambdas_terraform_4:
     <<: *build-image
-    image: "quay.io/nyulibraries/web-lambdas-terraform:${CIRCLE_BRANCH//\//_}-${CIRCLE_SHA1}"
+    image: "quay.io/nyulibraries/web-lambdas-terraform:${BRANCH_NO_SLASH}-${CIRCLE_SHA1}"
     depends_on:
       - web_lambdas_terraform_3
+    environment:
+      - BRANCH_NO_SLASH
+      - CIRCLE_SHA1

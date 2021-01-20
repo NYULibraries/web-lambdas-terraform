@@ -12,12 +12,15 @@ auth_quay: &auth_quay
 build_docker: &build_docker
   run:
     name: Build and tag Docker images
-    command: docker-compose build
+    command: |
+      export BRANCH_NO_SLASH=${CIRCLE_BRANCH//\//_}
+      docker-compose build
 
 push_docker: &push_docker
   run:
     name: Push images to repository
-    command: ~/scripts/push_quay.sh
+    command: |
+      ~/scripts/push_quay.sh
 
 version: 2.1
 jobs:
