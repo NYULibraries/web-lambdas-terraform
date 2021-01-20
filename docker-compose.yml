@@ -6,8 +6,10 @@ x-build-image: &build-image
       - web-lambdas-terraform
       - quay.io/nyulibraries/web-lambdas-terraform
       - quay.io/nyulibraries/web-lambdas-terraform:${BRANCH_NO_SLASH}
+      - quay.io/nyulibraries/web-lambdas-terraform:${BRANCH_NO_SLASH}-${CIRCLE_SHA1}
   environment:
     - BRANCH_NO_SLASH
+    - CIRCLE_SHA1
 
 services:
   web_lambdas_terraform_1:
