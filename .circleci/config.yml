@@ -19,8 +19,7 @@ build_docker: &build_docker
 push_docker: &push_docker
   run:
     name: Push images to repository
-    command: |
-      ~/scripts/push_quay.sh
+    command: ./scripts/push_quay.sh
 
 version: 2.1
 jobs:
