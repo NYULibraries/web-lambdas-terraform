@@ -218,3 +218,5 @@ resource "aws_lambda_alias" "test_lambda_alias" {
   }
 }
 ```
+
+- Add configuration for Lambda@Edge functions and integration with CloudFront
