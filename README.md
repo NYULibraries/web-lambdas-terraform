@@ -140,6 +140,7 @@ terraform_deploy: &terraform_deploy
   run:
     name: Deploy the Lambda to AWS via Terraform
     command: |
+      apk add gettext
       export TF_VAR_lambda_version=${CIRCLE_SHA1}
       export TF_VAR_environment_variables=$(envsubst < .tf_env_vars)
       docker-compose run terraform_deploy
