@@ -2,7 +2,7 @@ terraform {
   # Use AWS
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "~> 3.24.1"
     }
   }
@@ -14,20 +14,20 @@ terraform {
 
 # Some local variables for reuse
 locals {
-	lambda_function_name = var.lambda_function_name
-  lambda_s3_bucket = var.lambda_s3_bucket
-  lambda_full_name = "${var.aws_username}-${local.lambda_function_name}"
-  lambda_version = var.lambda_version
-  lambda_zip = "${local.lambda_function_name}.zip"
-  lambda_handler = var.lambda_handler
-  lambda_runtime = var.lambda_runtime
-  lambda_exec_arn = var.lambda_exec_arn
-  lambda_method = var.lambda_method
-  apigw_id = var.apigw_id
-  apigw_root_resource_id = var.apigw_root_resource_id
-  apigw_execution_arn = var.apigw_execution_arn
-  apigw_stage = var.apigw_stage
-  lambda_memory_size = var.lambda_memory_size
+  lambda_function_name          = var.lambda_function_name
+  lambda_s3_bucket              = var.lambda_s3_bucket
+  lambda_full_name              = "${var.aws_username}-${local.lambda_function_name}"
+  lambda_version                = var.lambda_version
+  lambda_zip                    = "${local.lambda_function_name}.zip"
+  lambda_handler                = var.lambda_handler
+  lambda_runtime                = var.lambda_runtime
+  lambda_exec_arn               = var.lambda_exec_arn
+  lambda_method                 = var.lambda_method
+  apigw_id                      = var.apigw_id
+  apigw_root_resource_id        = var.apigw_root_resource_id
+  apigw_execution_arn           = var.apigw_execution_arn
+  apigw_stage                   = var.apigw_stage
+  lambda_memory_size            = var.lambda_memory_size
   lambda_cw_schedule_expression = var.lambda_cw_schedule_expression
 }
 
@@ -66,7 +66,7 @@ resource "aws_cloudwatch_log_group" "lambda_fn_log_group" {
 
 # The API Gateway Resource
 resource "aws_api_gateway_resource" "apigw_res" {
-  count = (local.apigw_id != "" ? 1 : 0)
+  count       = (local.apigw_id != "" ? 1 : 0)
   rest_api_id = local.apigw_id
   parent_id   = local.apigw_root_resource_id
   path_part   = local.lambda_function_name
@@ -78,10 +78,10 @@ resource "aws_api_gateway_resource" "apigw_res" {
 
 # The API Gateway resource method
 resource "aws_api_gateway_method" "apigw_method" {
-  count = (local.apigw_id != "" ? 1 : 0)
-  rest_api_id   = local.apigw_id
-  resource_id   = aws_api_gateway_resource.apigw_res[0].id
-  http_method   = local.lambda_method
+  count       = (local.apigw_id != "" ? 1 : 0)
+  rest_api_id = local.apigw_id
+  resource_id = aws_api_gateway_resource.apigw_res[0].id
+  http_method = local.lambda_method
   # Assuming these are all open APIs for now
   authorization = "NONE"
 
@@ -92,7 +92,7 @@ resource "aws_api_gateway_method" "apigw_method" {
 
 # The API Gatway resource method integration
 resource "aws_api_gateway_integration" "apigw_integration" {
-  count = (local.apigw_id != "" ? 1 : 0)
+  count       = (local.apigw_id != "" ? 1 : 0)
   rest_api_id = local.apigw_id
   resource_id = aws_api_gateway_method.apigw_method[0].resource_id
   http_method = aws_api_gateway_method.apigw_method[0].http_method
@@ -109,7 +109,7 @@ resource "aws_api_gateway_integration" "apigw_integration" {
 
 # Redeploy the API Gateway for the new method/integration to take effect
 resource "aws_api_gateway_deployment" "apigw_deploy" {
-  count = (local.apigw_id != "" ? 1 : 0)
+  count       = (local.apigw_id != "" ? 1 : 0)
   rest_api_id = local.apigw_id
   stage_name  = local.apigw_stage
 
@@ -140,15 +140,15 @@ resource "aws_lambda_permission" "lambda_apigw_permission" {
 }
 
 resource "aws_cloudwatch_event_rule" "cw_rule" {
-  count = (local.lambda_cw_schedule_expression != "") ? 1 : 0
-  name = "${local.lambda_full_name}-Cron-Trigger"
+  count               = (local.lambda_cw_schedule_expression != "") ? 1 : 0
+  name                = "${local.lambda_full_name}-Cron-Trigger"
   schedule_expression = local.lambda_cw_schedule_expression
 }
 
 resource "aws_cloudwatch_event_target" "cw_target" {
   count = (local.lambda_cw_schedule_expression != "") ? 1 : 0
-  rule = aws_cloudwatch_event_rule.cw_rule[0].name
-  arn = aws_lambda_function.lambda_fn.arn
+  rule  = aws_cloudwatch_event_rule.cw_rule[0].name
+  arn   = aws_lambda_function.lambda_fn.arn
 
   depends_on = [
     aws_lambda_function.lambda_fn,
@@ -157,12 +157,12 @@ resource "aws_cloudwatch_event_target" "cw_target" {
 }
 
 resource "aws_lambda_permission" "lambda_cw_permission" {
-  count = (local.lambda_cw_schedule_expression != "") ? 1 : 0
-  statement_id = "AllowExecutionFromCloudWatch"
-  action = "lambda:InvokeFunction"
+  count         = (local.lambda_cw_schedule_expression != "") ? 1 : 0
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda_fn.function_name
-  principal = "events.amazonaws.com"
-  source_arn = aws_cloudwatch_event_rule.cw_rule[0].arn
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.cw_rule[0].arn
 
   depends_on = [
     aws_lambda_function.lambda_fn,
