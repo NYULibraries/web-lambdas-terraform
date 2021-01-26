@@ -10,9 +10,17 @@ The presence of a `TF_VAR_apigw_id` variable here will trigger the creation of a
 
 The presence of a `TF_VAR_schedule_expression` variable here will trigger the creation of a CloudWatch event-triggered cronjob.
 
+## Service User
+
+The Lambda service username is `web-lambdas-api-gateway` and the permissions are based on this naming scheme, so all new Lambda functions will have the following naming convention:
+
+```
+web-lambdas-api-gateway-{FUNCTION_NAME}
+```
+
 ## Usage
 
-Add the following files:
+To manage Lambda with this config add the following files:
 
 ### `.lambdafiles`
 
