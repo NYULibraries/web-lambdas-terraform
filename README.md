@@ -4,7 +4,7 @@ Terraform configs for building Lambdas in AWS and associating those with API Gat
 
 ### API Gateway
 
-The presence of a `TF_VAR_apigw_id` variable here will trigger the creation of an API Gateway resource for this Lambda.
+The presence of a `TF_VAR_apigw_id` variable here will trigger the creation of an API Gateway resource for this Lambda. You will also need to specify `TF_VAR_apigw_root_resource_id` and `TF_VAR_apigw_execution_arn` for the terraform to create this association successfully.
 
 ### CloudWatch
 
