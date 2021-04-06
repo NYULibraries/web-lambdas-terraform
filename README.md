@@ -64,6 +64,41 @@ RUN cd /tmp && yarn install --frozen-lockfile --ignore-optional $(if [[ ! -z $PR
 COPY . .
 ```
 
+### `deploy/`
+
+Create two files in a `deploy/` directory:
+
+#### `Dockerfile`
+
+Create a container that starts from our `web-lambdas-terraform` terraform modules and copies in a local entrypoint to configure the backend for this specific function:
+
+```
+FROM quay.io/nyulibraries/web-lambdas-terraform:master
+
+COPY docker-entrypoint.sh .
+RUN chmod a+x ./docker-entrypoint.sh
+
+ENTRYPOINT [ "./docker-entrypoint.sh" ]
+
+CMD ["terraform", "plan"]
+```
+
+#### `docker-entrypoint.sh`
+
+The Docker entrypoint sets up the backend with variables from the CircleCI context:
+
+```
+#!/bin/sh
+set -e
+
+terraform init -backend-config="bucket=${BACKEND_BUCKET}" \
+               -backend-config="key=${BACKEND_KEY}" \
+               -backend-config="region=${BACKEND_REGION}" \
+               -backend-config="dynamodb_table=${BACKEND_DYNAMODB_TABLE}"
+
+exec "$@"
+```
+
 ### `docker-compose.yml`
 
 Pass through all the necessary default variables to a reusable yaml module in your docker-compose.yml:
@@ -72,7 +107,9 @@ Pass through all the necessary default variables to a reusable yaml module in yo
 
 ```
 x-environment: &x-environment
-  BACKEND_CONFIG: 
+  BACKEND_BUCKET: 
+  BACKEND_REGION: 
+  BACKEND_DYNAMODB_TABLE: 
   AWS_ACCESS_KEY_ID: 
   AWS_SECRET_ACCESS_KEY: 
   AWS_DEFAULT_REGION: 
@@ -95,10 +132,12 @@ Create services for building and deploying the lambda:
 services:
 ...
   terraform_deploy:
-    image: quay.io/nyulibraries/web-lambdas-terraform:master
+    build:
+      context: deploy/
     command: ["terraform", "apply", "-auto-approve"]
     environment:
       <<: *x-environment
+      BACKEND_KEY: lambdas/tf_state/{FUNCTION_NAME}
       TF_VAR_lambda_function_name: {FUNCTION_NAME}
       TF_VAR_lambda_handler: handler.persistent
       TF_VAR_lambda_runtime: nodejs12.x
