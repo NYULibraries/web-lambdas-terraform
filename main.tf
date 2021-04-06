@@ -117,6 +117,10 @@ resource "aws_api_gateway_deployment" "apigw_deploy" {
     deployed_at = timestamp()
   }
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   depends_on = [
     aws_api_gateway_method.apigw_method[0],
     aws_api_gateway_integration.apigw_integration[0]
