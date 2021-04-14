@@ -15,6 +15,7 @@ terraform {
 # Some local variables for reuse
 locals {
   lambda_function_name          = var.lambda_function_name
+  lambda_description            = var.lambda_description
   lambda_s3_bucket              = var.lambda_s3_bucket
   lambda_full_name              = "${var.aws_username}-${local.lambda_function_name}"
   lambda_version                = var.lambda_version
@@ -34,6 +35,7 @@ locals {
 # The Lambda Function itself
 resource "aws_lambda_function" "lambda_fn" {
   function_name = local.lambda_full_name
+  description = local.lambda_description
 
   # The bucket name as created previously
   s3_bucket = local.lambda_s3_bucket

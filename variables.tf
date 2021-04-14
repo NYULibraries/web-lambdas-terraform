@@ -28,6 +28,9 @@ variable "lambda_version" {
 variable "lambda_function_name" {
   type = string
 }
+variable "lambda_description" {
+  type = string
+}
 variable "lambda_handler" {
   type = string
 }

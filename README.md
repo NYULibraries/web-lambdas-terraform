@@ -139,6 +139,7 @@ services:
       <<: *x-environment
       BACKEND_KEY: lambdas/tf_state/{FUNCTION_NAME}
       TF_VAR_lambda_function_name: {FUNCTION_NAME}
+      TF_VAR_lambda_description: {USEFUL_DESCRIPTION_OF_FUNCTION}
       TF_VAR_lambda_handler: handler.persistent
       TF_VAR_lambda_runtime: nodejs12.x
       TF_VAR_lambda_method: GET
