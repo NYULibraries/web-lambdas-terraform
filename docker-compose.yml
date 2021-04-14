@@ -2,6 +2,9 @@ version: '3.7'
 x-build-image: &build-image
   build:
     context: .
+    args:
+      TF_VERSION: ${TF_VERSION}
+      PATCH: ${PATCH}
     cache_from:
       - web-lambdas-terraform
       - quay.io/nyulibraries/web-lambdas-terraform
@@ -10,6 +13,7 @@ x-build-image: &build-image
   environment:
     - BRANCH_NO_SLASH
     - CIRCLE_SHA1
+  env_file: .env
 
 services:
   web_lambdas_terraform_1:

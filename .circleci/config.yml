@@ -25,8 +25,8 @@ push_tagged_version: &push_tagged_version
   run:
     name: Push images to repository
     command: |
-      docker pull quay.io/nyulibraries/${PROJECT_NAME}:${CIRCLE_BRANCH//\//_}-${CIRCLE_SHA1}
-      docker tag quay.io/nyulibraries/${PROJECT_NAME}:${CIRCLE_BRANCH//\//_}-${CIRCLE_SHA1} quay.io/nyulibraries/${PROJECT_NAME}:${CIRCLE_TAG}
+      docker-compose build web_lambdas_terraform_1
+      docker tag web_lambdas_terraform quay.io/nyulibraries/${PROJECT_NAME}:${CIRCLE_TAG}
       docker push quay.io/nyulibraries/${PROJECT_NAME}:${CIRCLE_TAG}
 
 version: 2.1
