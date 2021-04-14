@@ -52,7 +52,7 @@ resource "aws_lambda_function" "lambda_fn" {
   memory_size = local.lambda_memory_size
 
   environment {
-    variables = merge(var.environment_variables, map("ManagedBy", "Terraform"))
+    variables = merge(var.environment_variables, tomap("ManagedBy", "Terraform"))
   }
 
   depends_on = [
