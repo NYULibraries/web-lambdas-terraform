@@ -21,6 +21,14 @@ push_docker: &push_docker
     name: Push images to repository
     command: ./scripts/push_quay.sh
 
+push_tagged_version: &push_tagged_version
+  run:
+    name: Push images to repository
+    command: |
+      docker pull quay.io/nyulibraries/${PROJECT_NAME}:${CIRCLE_BRANCH//\//_}-${CIRCLE_SHA1}
+      docker tag quay.io/nyulibraries/${PROJECT_NAME}:${CIRCLE_BRANCH//\//_}-${CIRCLE_SHA1} quay.io/nyulibraries/${PROJECT_NAME}:${CIRCLE_TAG}
+      docker push quay.io/nyulibraries/${PROJECT_NAME}:${CIRCLE_TAG}
+
 version: 2.1
 jobs:
   build-image:
@@ -33,8 +41,23 @@ jobs:
       - <<: *build_docker
       - <<: *push_docker
 
+  tag-version:
+    <<: *docker-defaults
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - <<: *auth_quay
+      - <<: *push_tagged_version
+
 workflows:
   version: 2
   build:
     jobs:
       - build-image
+      - tag-version:
+          requires:
+            - build-image
+          filters:
+            tags:
+              only: /^v.*/
