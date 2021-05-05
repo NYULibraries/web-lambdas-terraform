@@ -57,7 +57,7 @@ workflows:
       - build-image:
           filters:
             tags:
-              only: /.*/
+              only: /^v.*/
             branches:
               only: /.*/
       - tag-version:
@@ -65,6 +65,6 @@ workflows:
             - build-image
           filters:
             tags:
-              only: /.*/
+              only: /^v.*/
             branches:
               ignore: /.*/
