@@ -3,6 +3,6 @@ ARG TF_VERSION
 FROM hashicorp/terraform:${TF_VERSION}
 
 WORKDIR /app
-COPY . .
+COPY *.tf .
 
 CMD [ "terraform", "plan" ]
