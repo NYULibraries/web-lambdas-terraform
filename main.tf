@@ -51,6 +51,8 @@ resource "aws_lambda_function" "lambda_fn" {
 
   memory_size = local.lambda_memory_size
 
+  publish = true
+
   environment {
     variables = merge(var.environment_variables, tomap({"ManagedBy"="Terraform"}))
   }
