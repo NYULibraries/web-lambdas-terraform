@@ -33,6 +33,10 @@ variable "lambda_version" {
 variable "lambda_function_name" {
   type = string
 }
+variable "lambda_parent_function_name" {
+  type = string
+  default = ""
+}
 variable "lambda_description" {
   type = string
 }
