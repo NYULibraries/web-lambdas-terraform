@@ -54,12 +54,17 @@ workflows:
   version: 2
   build:
     jobs:
-      - build-image
+      - build-image:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only: /.*/
       - tag-version:
           requires:
             - build-image
           filters:
             tags:
               only: /.*/
-            # branches:
-            #   ignore: /.*/
+            branches:
+              ignore: /.*/
