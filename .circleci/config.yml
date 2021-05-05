@@ -60,6 +60,6 @@ workflows:
             - build-image
           filters:
             tags:
-              only: /^v.*/
+              only: /.*/
             branches:
               ignore: /.*/
