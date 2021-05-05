@@ -56,13 +56,9 @@ workflows:
     jobs:
       - build-image:
           filters:
-            tags:
-              only: /^v.*/
             branches:
               only: /.*/
       - tag-version:
-          requires:
-            - build-image
           filters:
             tags:
               only: /^v.*/
