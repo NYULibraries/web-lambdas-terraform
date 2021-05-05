@@ -151,7 +151,7 @@ resource "aws_lambda_permission" "lambda_apigw_permission" {
 
 resource "aws_cloudwatch_event_rule" "cw_rule" {
   count               = (local.lambda_cw_schedule_expression != "") ? 1 : 0
-  name                = "${local.lambda_full_name}-Cron-Trigger"
+  name                = "${local.lambda_function_name}-Cron-Trigger"
   schedule_expression = local.lambda_cw_schedule_expression
 }
 
