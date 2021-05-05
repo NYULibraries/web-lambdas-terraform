@@ -8,7 +8,7 @@ The presence of a `TF_VAR_apigw_id` variable here will trigger the creation of a
 
 ### CloudWatch
 
-The presence of a `TF_VAR_schedule_expression` variable here will trigger the creation of a CloudWatch event-triggered cronjob.
+The presence of a `TF_VAR_lambda_cw_schedule_expression` variable here will trigger the creation of a CloudWatch event-triggered cronjob.
 
 ## Service User
 
