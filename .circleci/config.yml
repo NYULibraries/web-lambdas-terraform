@@ -2,6 +2,8 @@
 docker-defaults: &docker-defaults
   docker:
     - image: quay.io/nyulibraries/circleci_docker:19.03.13-dc-1.27.4-0
+      environment:
+        - PROJECT_NAME=web-lambdas-terraform
   working_directory: ~/app
 
 auth_quay: &auth_quay
