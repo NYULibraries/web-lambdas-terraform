@@ -4,12 +4,19 @@ variable "lambda_exec_arn" {
 }
 variable "apigw_id" {
   type = string
+  default = ""
 }
 variable "apigw_root_resource_id" {
   type = string
+  default = ""
 }
 variable "apigw_execution_arn" {
   type = string
+  default = ""
+}
+variable "apigw_stage" {
+  type = string
+  default = ""
 }
 variable "lambda_s3_bucket" {
   type = string
@@ -17,9 +24,7 @@ variable "lambda_s3_bucket" {
 variable "aws_username" {
   type = string
 }
-variable "apigw_stage" {
-  type = string
-}
+
 
 # To be defined per application
 variable "lambda_version" {

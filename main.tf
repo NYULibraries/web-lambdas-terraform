@@ -131,6 +131,7 @@ resource "aws_api_gateway_deployment" "apigw_deploy" {
 
 # Gives an external source (like a CloudWatch Event Rule) permission to access the Lambda function.
 resource "aws_lambda_permission" "lambda_apigw_permission" {
+  count         = (local.apigw_id != "" ? 1 : 0)
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda_fn.function_name

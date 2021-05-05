@@ -36,9 +36,9 @@ yarn.lock
 
 ### `.tf_env_vars`
 
-This should include a [Terraform object](https://www.terraform.io/docs/configuration/types.html#object-) of application level variables. They are [formatted for command-line injection](https://www.terraform.io/docs/commands/environment-variables.html#tf_var_name) (hence they look like JSON). You can include interpolated variable secrets from the CircleCI env, etc.:
+This should include a [Terraform object](https://www.terraform.io/docs/configuration/types.html#object-) of application level variables. They are [formatted for command-line injection](https://www.terraform.io/docs/commands/environment-variables.html#tf_var_name) (hence they look like POJOs). You can include interpolated variable secrets from the CircleCI env, etc.:
 ```
-{"WORLDCAT_API_KEY":"$WORLDCAT_API_KEY"}
+{"WORLDCAT_API_KEY":"$WORLDCAT_API_KEY","VAR2":"$VAR2",...}
 ```
 
 ### `Dockerfile`
