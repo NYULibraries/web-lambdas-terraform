@@ -19,7 +19,8 @@ locals {
   lambda_s3_bucket              = var.lambda_s3_bucket
   lambda_full_name              = "${var.aws_username}-${local.lambda_function_name}"
   lambda_version                = var.lambda_version
-  lambda_zip                    = "${local.lambda_function_name}.zip"
+  lambda_s3_folder              = var.lambda_parent_function_name != "" ? var.lambda_parent_function_name : local.lambda_function_name
+  lambda_zip                    = var.lambda_parent_function_name != "" ? "${var.lambda_parent_function_name}.zip" : "${local.lambda_function_name}.zip"
   lambda_handler                = var.lambda_handler
   lambda_runtime                = var.lambda_runtime
   lambda_exec_arn               = var.lambda_exec_arn
@@ -39,7 +40,7 @@ resource "aws_lambda_function" "lambda_fn" {
 
   # The bucket name as created previously
   s3_bucket = local.lambda_s3_bucket
-  s3_key    = "${local.lambda_function_name}/${local.lambda_version}/${local.lambda_zip}"
+  s3_key    = "${local.lambda_s3_folder}/${local.lambda_version}/${local.lambda_zip}"
 
   # "main" is the filename within the zip file (main.js) and "handler"
   # is the name of the property under which the handler function was
@@ -50,6 +51,8 @@ resource "aws_lambda_function" "lambda_fn" {
   role = local.lambda_exec_arn
 
   memory_size = local.lambda_memory_size
+
+  publish = true
 
   environment {
     variables = merge(var.environment_variables, tomap({"ManagedBy"="Terraform"}))
@@ -148,7 +151,7 @@ resource "aws_lambda_permission" "lambda_apigw_permission" {
 
 resource "aws_cloudwatch_event_rule" "cw_rule" {
   count               = (local.lambda_cw_schedule_expression != "") ? 1 : 0
-  name                = "${local.lambda_full_name}-Cron-Trigger"
+  name                = "${local.lambda_function_name}-Cron-Trigger"
   schedule_expression = local.lambda_cw_schedule_expression
 }
 
