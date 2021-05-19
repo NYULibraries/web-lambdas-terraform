@@ -310,6 +310,7 @@ get_lambda_zip: &get_lambda_zip
 
 #### Add multiple entries to your `deploy.yml`
 
+```
 func1:
   BACKEND_KEY: lambdas/tf_state/{FUNCTION_NAME}
   TF_VAR_lambda_function_name: {FUNCTION_NAME}
