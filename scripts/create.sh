@@ -1,6 +1,4 @@
-#!/bin/sh
-
-set -e
+#!/bin/sh -ex
 
 if [[ ! -f deploy.yml ]] ; then
     echo 'File is missing: deploy.yml. Exiting...'
