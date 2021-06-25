@@ -18,6 +18,7 @@ else
     . set_env.sh $app
     . init_tf_backend.sh
     terraform apply -auto-approve
+    rm -rf .terraform/
   done
 fi
 
