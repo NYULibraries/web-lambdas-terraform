@@ -328,6 +328,31 @@ func3:
   ...
 ```
 
+## Debugging
+
+When a lambda deploy fails, it may need to be manually resuscitated from an error state. The following are recipes using for clearing out these error states. Be sure to substitute the correct environment variables.
+
+When a deploy fails after placing a lock but before clearing it, manually clear the lock from dynamodb:
+
+```
+aws dynamodb scan --table-name $LOCK_TABLE_NAME | jq '.Items[].LockID.S'
+aws dynamodb delete-item --table-name $LOCK_TABLE_NAME --key='{"LockID":{"S": "$TF_STATE_BUCKET_NAME/lambdas/tf_state/$FUNCTION_NAME"}}'
+```
+
+When a tf state becomes corrupted, delete the corresponding tf state file in S3:
+
+```
+aws s3 ls s3://$TF_STATE_BUCKET_NAME
+aws s3 rm s3://$TF_STATE_BUCKET_NAME/lambdas/tf_state/$FUNCTION_NAME
+```
+
+Additionally, after clearing the ft state, the old function and log group must be destroyed:
+
+```
+aws lambda delete-function --function-name web-lambdas-api-gateway-$FUNCTION_NAME
+aws logs delete-log-group --log-group-name /aws/lambda/web-lambdas-api-gateway-$FUNCTION_NAME
+```
+
 ## TODO:
 
 - Add configuration for Lambda@Edge functions and integration with CloudFront

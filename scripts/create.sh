@@ -1,6 +1,4 @@
-#!/bin/sh
-
-set -e
+#!/bin/sh -ex
 
 if [[ ! -f deploy.yml ]] ; then
     echo 'File is missing: deploy.yml. Exiting...'
@@ -20,6 +18,7 @@ else
     . set_env.sh $app
     . init_tf_backend.sh
     terraform apply -auto-approve
+    rm -rf .terraform/
   done
 fi
 
