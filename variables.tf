@@ -1,3 +1,4 @@
+
 # To be defined by the context
 variable "lambda_exec_arn" {
   type = string
