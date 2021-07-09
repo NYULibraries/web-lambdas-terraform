@@ -4,18 +4,17 @@ Terraform configs for building Lambdas in AWS and associating those with API Gat
 
 ## Versioning this repos
 
-We version this repository based on the Terraform version we're using and the patch number based on our functionality changes. We document this in the `.env` file. So given the following `.env` file:
+We version this repository based on the Terraform version and the patch number based on our functionality changes. We document this in the `.env` file . So given the following `.env` file:
 
 ```
 TF_VERSION='0.15.0'
-AWS_SDK_VERSION='3.49.0'
 PATCH='0'
 ```
 
-We will manually create a release called `0.15.0-awssdk-3.49.0-0` that will trigger the creation of an image called:
+We will manually create a release called `0.15.0-0` that will trigger the creation of an image called:
 
 ```
-quay.io/nyulibraries/web-lambdas-terraform:v0.15.0-awssdk-3.49.0-0
+quay.io/nyulibraries/web-lambdas-terraform:v0.15.0-0
 ```
 
 ### API Gateway (i.e. REST API)

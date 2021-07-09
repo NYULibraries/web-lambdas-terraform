@@ -1,17 +1,3 @@
-terraform {
-  # Use AWS
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = var.aws_sdk_version
-    }
-  }
-
-  # Backend for TF state is S3
-  backend "s3" {
-  }
-}
-
 # Some local variables for reuse
 locals {
   lambda_function_name          = var.lambda_function_name
