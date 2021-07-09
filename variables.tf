@@ -1,3 +1,7 @@
+variable "aws_sdk_verion" {
+  type = string
+}
+
 # To be defined by the context
 variable "lambda_exec_arn" {
   type = string

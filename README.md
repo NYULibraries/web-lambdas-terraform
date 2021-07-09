@@ -8,13 +8,14 @@ We version this repository based on the Terraform version we're using and the pa
 
 ```
 TF_VERSION='0.15.0'
+AWS_SDK_VERSION='3.49.0'
 PATCH='0'
 ```
 
-We will manually create a release called `v0.15.0-0` that will trigger the creation of an image called:
+We will manually create a release called `0.15.0-awssdk-3.49.0-0` that will trigger the creation of an image called:
 
 ```
-quay.io/nyulibraries/web-lambdas-terraform:v0.15.0-0
+quay.io/nyulibraries/web-lambdas-terraform:v0.15.0-awssdk-3.49.0-0
 ```
 
 ### API Gateway (i.e. REST API)
