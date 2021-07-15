@@ -54,7 +54,7 @@ resource "aws_lambda_function" "lambda_fn" {
   publish = true
 
   environment {
-    variables = merge(var.environment_variables, tomap({"ManagedBy"="Terraform"}))
+    variables = var.environment_variables
   }
 
   depends_on = [
