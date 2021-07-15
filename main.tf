@@ -53,8 +53,11 @@ resource "aws_lambda_function" "lambda_fn" {
 
   publish = true
 
-  environment {
-    variables = var.environment_variables
+  dynamic "environment" {
+    for_each = local.environment_variables
+    content {
+      variables = environment.value
+    }
   }
 
   depends_on = [
