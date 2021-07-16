@@ -30,6 +30,7 @@ locals {
   apigw_stage                   = var.apigw_stage
   lambda_memory_size            = var.lambda_memory_size
   lambda_cw_schedule_expression = var.lambda_cw_schedule_expression
+  environment_variables         = var.environment_variables
 }
 
 # The Lambda Function itself
@@ -53,8 +54,11 @@ resource "aws_lambda_function" "lambda_fn" {
 
   publish = true
 
-  environment {
-    variables = var.environment_variables
+  dynamic "environment" {
+    for_each = local.environment_variables
+    content {
+      variables = environment.value
+    }
   }
 
   depends_on = [
