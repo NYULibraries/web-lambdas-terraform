@@ -35,7 +35,7 @@ web-lambdas-api-gateway-{FUNCTION_NAME}
 
 ## Usage
 
-See [wiki](/NYULibraries/web-lambdas-terraform/wiki) for detailed usage examples.
+See [wiki](./wiki) for detailed usage examples.
 
 ## Debugging
 
