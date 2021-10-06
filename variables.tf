@@ -57,7 +57,7 @@ variable "lambda_memory_size" {
 variable "environment_variables" {
   type        = map(any)
   description = "Environment variables for the lambda"
-  default     = {}
+  default     = null
 }
 variable "lambda_cw_schedule_expression" {
   type    = string

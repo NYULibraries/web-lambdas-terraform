@@ -8,13 +8,13 @@ We version this repository based on the Terraform version and the patch number b
 
 ```
 TF_VERSION='0.15.0'
-PATCH='0'
+PATCH='4'
 ```
 
-We will manually create a release called `0.15.0-0` that will trigger the creation of an image called:
+We will manually create a release called `0.15.0-4` that will trigger the creation of an image called:
 
 ```
-quay.io/nyulibraries/web-lambdas-terraform:v0.15.0-0
+quay.io/nyulibraries/web-lambdas-terraform:v0.15.0-4
 ```
 
 ### API Gateway (i.e. REST API)
@@ -110,7 +110,7 @@ COPY . .
 Create a container that starts from our `web-lambdas-terraform` terraform modules and copies in the local config files:
 
 ```
-FROM quay.io/nyulibraries/web-lambdas-terraform:v0.15.0-0
+FROM quay.io/nyulibraries/web-lambdas-terraform:v0.15.0-4
 
 COPY .tf_env_vars deploy.yml ./
 ```
@@ -354,7 +354,3 @@ aws lambda list-functions | jq '.Functions[].FunctionName'
 aws lambda delete-function --function-name web-lambdas-api-gateway-$FUNCTION_NAME
 aws logs delete-log-group --log-group-name /aws/lambda/web-lambdas-api-gateway-$FUNCTION_NAME
 ```
-
-## TODO:
-
-- Add configuration for Lambda@Edge functions and integration with CloudFront
