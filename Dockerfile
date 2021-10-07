@@ -7,11 +7,7 @@ RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repo
 
 RUN apk update && \
     apk upgrade && \
-    apk add --no-cache gettext curl yq~=4
-
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-        unzip awscliv2.zip && \
-        ./aws/install
+    apk add --no-cache gettext yq~=4
 
 WORKDIR /app
 COPY main.tf variables.tf scripts/ ./
