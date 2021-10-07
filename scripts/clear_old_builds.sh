@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/sh -e
 
 : "${S3_BUCKET?Must specify S3_BUCKET}"
 : "${LAMBDA_FN?Must specify LAMBDA_FN}"
